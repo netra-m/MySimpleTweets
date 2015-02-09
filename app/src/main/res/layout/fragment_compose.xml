@@ -1,0 +1,87 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="400dp"
+    android:layout_height="400dp"
+    android:layout_gravity="center"
+    tools:context="com.codepath.apps.mysimpletweets.activities.ComposeActivity">
+
+    <ImageView
+        android:id="@+id/ivComposeImage"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:adjustViewBounds="true"
+        android:scaleType="fitXY"
+        android:padding="10dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/llVertical"
+        android:layout_toRightOf="@+id/ivComposeImage"
+        android:orientation="vertical"
+        android:padding="10dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tvComposeUserName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvComposeScreenName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:paddingLeft="20dp"
+                android:textSize="12sp"
+                android:textStyle="italic" />
+        </LinearLayout>
+
+        <EditText
+            android:id="@+id/etCompose"
+            style="@style/Base.TextAppearance.AppCompat.Medium.Inverse"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="12sp"/>
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/llVertical"
+        android:gravity="end"
+        android:orientation="horizontal"
+        android:paddingTop="10dp">
+
+        <TextView
+            android:id="@+id/tvComposeNumChars"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:paddingRight="20dp"
+            android:text="140"
+            android:textSize="10sp"
+            android:textStyle="italic" />
+
+        <Button
+            android:id="@+id/btTweet"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="composeTweet"
+            android:text="Tweet"
+            android:textSize="12sp"
+            android:theme="@style/Base.Theme.AppCompat.Light" />
+    </LinearLayout>
+
+</RelativeLayout>
