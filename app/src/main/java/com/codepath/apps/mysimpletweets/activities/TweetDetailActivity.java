@@ -26,13 +26,13 @@ public class TweetDetailActivity extends ActionBarActivity implements ComposeCal
         super.onCreate(savedInstanceState);
 
         ActionBar mActionBar = getSupportActionBar();
-        mActionBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#ff6ec8ff")));
+        mActionBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#4099FF")));
         mActionBar.setDisplayShowHomeEnabled(false);
         mActionBar.setDisplayShowTitleEnabled(false);
         LayoutInflater mInflater = LayoutInflater.from(this);
         View mCustomView = mInflater.inflate(R.layout.timeline_action_bar, null);
 
-        ((TextView) mCustomView.findViewById(R.id.title_text)).setText("Tweet View");
+        ((TextView) mCustomView.findViewById(R.id.title_text)).setText("Tweet");
 
         mActionBar.setCustomView(mCustomView);
         mActionBar.setDisplayShowCustomEnabled(true);
@@ -80,6 +80,21 @@ public class TweetDetailActivity extends ActionBarActivity implements ComposeCal
         }
         else {
             ivTweetDetail.setVisibility(View.GONE);
+        }
+
+        //retweet related
+        ImageView ivRetweeted = (ImageView) findViewById(R.id.ivRetweeted);
+        TextView tvRetweeted = (TextView) findViewById(R.id.tvRetweeted);
+
+        if(tweet.getRetweetedUser() != null) {
+            ivRetweeted.setVisibility(View.VISIBLE);
+            tvRetweeted.setVisibility(View.VISIBLE);
+            tvRetweeted.setText(tweet.getRetweetedUser().getName()+" retweeted");
+
+        }
+        else {
+            ivRetweeted.setVisibility(View.GONE);
+            tvRetweeted.setVisibility(View.GONE);
         }
     }
 

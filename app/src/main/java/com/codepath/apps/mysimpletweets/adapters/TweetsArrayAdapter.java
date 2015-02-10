@@ -38,6 +38,7 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
 
         ImageView ivProfileImage = (ImageView) convertView.findViewById(R.id.ivProfileImage);
         ImageView ivTweetImage = (ImageView) convertView.findViewById(R.id.ivTweetImage);
+
         TextView tvBody = (TextView) convertView.findViewById(R.id.tvBody);
         TextView tvUserName = (TextView) convertView.findViewById(R.id.tvUserName);
         TextView tvScreenName = (TextView) convertView.findViewById(R.id.tvScreenName);
@@ -74,6 +75,21 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
         }
         else {
             ivTweetImage.setVisibility(View.GONE);
+        }
+
+        //retweet related
+        ImageView ivRetweeted = (ImageView) convertView.findViewById(R.id.ivRetweeted);
+        TextView tvRetweeted = (TextView) convertView.findViewById(R.id.tvRetweeted);
+
+        if(tweet.getRetweetedUser() != null) {
+            ivRetweeted.setVisibility(View.VISIBLE);
+            tvRetweeted.setVisibility(View.VISIBLE);
+            tvRetweeted.setText(tweet.getRetweetedUser().getName()+" retweeted");
+
+        }
+        else {
+            ivRetweeted.setVisibility(View.GONE);
+            tvRetweeted.setVisibility(View.GONE);
         }
 
         return convertView;

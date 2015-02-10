@@ -45,6 +45,17 @@ public class Tweet extends Model implements Serializable {
     @Column(name = "favoriteCount")
     private int favoriteCount;
 
+    @Column(name="retweetedUser")
+    private User retweetedUser;
+
+    public User getRetweetedUser() {
+        return retweetedUser;
+    }
+
+    public void setRetweetedUser(User retweetedUser) {
+        this.retweetedUser = retweetedUser;
+    }
+
     public String getEmbeddedImageURL() {
         return embeddedImageURL;
     }
@@ -109,6 +120,12 @@ public class Tweet extends Model implements Serializable {
         Tweet tweet = new Tweet();
 
         try {
+
+            if(jsonObject.has("retweeted_status")) {
+                tweet.setRetweetedUser(User.fromJSON(jsonObject.getJSONObject("user")));
+                jsonObject = jsonObject.getJSONObject("retweeted_status");
+            }
+
             tweet.setBody(jsonObject.getString("text"));
             tweet.setUid(jsonObject.getLong("id"));
             tweet.setCreatedAt(jsonObject.getString("created_at"));

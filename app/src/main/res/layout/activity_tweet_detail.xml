@@ -11,13 +11,41 @@
         android:scaleType="fitXY"
         android:adjustViewBounds="true"/>
 
+    <LinearLayout
+        android:id="@+id/llRetweeted"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@+id/ivTweetDetail"
+        android:paddingLeft="55dp"
+        android:paddingTop="10dp">
+
+        <ImageView
+            android:id="@+id/ivRetweeted"
+            android:layout_width="wrap_content"
+            android:layout_height="15dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignRight="@+id/ivProfileImage"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/ic_retweet" />
+
+        <TextView
+            android:id="@+id/tvRetweeted"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="bkah retweeted"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textSize="12sp"/>
+
+    </LinearLayout>
+
 
     <LinearLayout
         android:id="@+id/llHorizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_below="@+id/ivTweetDetail"
+        android:layout_below="@+id/llRetweeted"
         android:padding="10dp">
 
         <ImageView
@@ -69,7 +97,6 @@
         android:maxLines="3"
         android:paddingLeft="15dp"
         android:paddingRight="15dp"
-        android:paddingTop="15dp"
         android:text="Great weather today"
         android:textSize="15sp" />
 
