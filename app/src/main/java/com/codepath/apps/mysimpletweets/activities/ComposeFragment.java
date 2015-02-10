@@ -2,9 +2,6 @@ package com.codepath.apps.mysimpletweets.activities;
 
 import android.app.Activity;
 import android.app.Dialog;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.text.Editable;
@@ -50,20 +47,16 @@ public class ComposeFragment extends DialogFragment {
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        Dialog dialog = new Dialog(getActivity(), android.R.style.Theme_Holo_NoActionBar_TranslucentDecor);
+        Dialog dialog = new Dialog(getActivity(), android.R.style.Theme_Holo_Dialog_NoActionBar);
 
         final View view = getActivity().getLayoutInflater().inflate(R.layout.fragment_compose, null);
 
-        final Drawable d = new ColorDrawable(Color.BLACK);
-        d.setAlpha(200);
-
-        dialog.getWindow().setBackgroundDrawable(d);
         dialog.getWindow().setContentView(view);
 
         final WindowManager.LayoutParams params = dialog.getWindow().getAttributes();
-        params.width = WindowManager.LayoutParams.WRAP_CONTENT;
+        params.width = WindowManager.LayoutParams.MATCH_PARENT;
         params.height = WindowManager.LayoutParams.WRAP_CONTENT;
-        params.gravity = Gravity.CENTER;
+        params.gravity = Gravity.TOP;
 
         dialog.setCanceledOnTouchOutside(true);
 
@@ -78,6 +71,7 @@ public class ComposeFragment extends DialogFragment {
         getDialog().setCanceledOnTouchOutside(true);
 
         User currentUser = (User) this.getArguments().get("user");
+
 
         TextView tvComposeUserName = (TextView) view.findViewById(R.id.tvComposeUserName);
         final TextView tvComposeNumChars = (TextView) view.findViewById(R.id.tvComposeNumChars);
@@ -105,7 +99,6 @@ public class ComposeFragment extends DialogFragment {
             }
 
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                //This sets a textview to the current length
                 tvComposeNumChars.setText(String.valueOf(140 - s.length()));
             }
 
@@ -113,6 +106,13 @@ public class ComposeFragment extends DialogFragment {
             }
         };
         etCompose.addTextChangedListener(mTextEditorWatcher);
+
+        if( this.getArguments().get("replyTo") != null )
+        {
+            String replyTo = "@" + (String) this.getArguments().get("replyTo");
+            etCompose.setText(replyTo);
+            etCompose.setSelection(etCompose.getText().length());
+        }
 
         return view;
     }

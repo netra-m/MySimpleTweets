@@ -3,36 +3,39 @@
     android:layout_width="400dp"
     android:layout_height="400dp"
     android:layout_gravity="center"
+    android:background="#fff"
     tools:context="com.codepath.apps.mysimpletweets.activities.ComposeActivity">
 
-    <ImageView
-        android:id="@+id/ivComposeImage"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:adjustViewBounds="true"
-        android:scaleType="fitXY"
-        android:padding="10dp"/>
 
     <LinearLayout
+        android:id="@+id/llHorizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/llVertical"
-        android:layout_toRightOf="@+id/ivComposeImage"
-        android:orientation="vertical"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:orientation="horizontal"
         android:padding="10dp">
+
+        <ImageView
+            android:id="@+id/ivComposeImage"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:adjustViewBounds="true"
+            android:padding="10dp"
+            android:scaleType="fitXY" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_gravity="center_vertical"
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/tvComposeUserName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
+                android:textColor="#000"
                 android:textSize="15sp"
                 android:textStyle="bold" />
 
@@ -41,33 +44,41 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:paddingLeft="20dp"
+                android:textColor="#000"
                 android:textSize="12sp"
                 android:textStyle="italic" />
         </LinearLayout>
 
-        <EditText
-            android:id="@+id/etCompose"
-            style="@style/Base.TextAppearance.AppCompat.Medium.Inverse"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="12sp"/>
-
 
     </LinearLayout>
+
+    <EditText
+        android:id="@+id/etCompose"
+        style="@style/Base.TextAppearance.AppCompat.Medium.Inverse"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/llHorizontal"
+        android:background="#0000"
+        android:hint="What's happening?"
+        android:paddingLeft="10dp"
+        android:textColor="#000"
+        android:textColorHint="#ffadadad"
+        android:textSize="12sp" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/llVertical"
+        android:layout_below="@+id/etCompose"
         android:gravity="end"
         android:orientation="horizontal"
+        android:padding="10dp"
         android:paddingTop="10dp">
 
         <TextView
             android:id="@+id/tvComposeNumChars"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="#ffadadad"
             android:gravity="center"
             android:paddingRight="20dp"
             android:text="140"
@@ -78,10 +89,12 @@
             android:id="@+id/btTweet"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="@drawable/custom_button"
             android:onClick="composeTweet"
             android:text="Tweet"
-            android:textSize="12sp"
-            android:theme="@style/Base.Theme.AppCompat.Light" />
+            android:textColor="#fff"
+            android:textSize="10sp"
+            android:textStyle="bold"/>
     </LinearLayout>
 
 </RelativeLayout>
