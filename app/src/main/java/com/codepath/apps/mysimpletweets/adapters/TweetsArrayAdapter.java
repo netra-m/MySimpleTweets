@@ -37,6 +37,7 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
         }
 
         ImageView ivProfileImage = (ImageView) convertView.findViewById(R.id.ivProfileImage);
+        ImageView ivTweetImage = (ImageView) convertView.findViewById(R.id.ivTweetImage);
         TextView tvBody = (TextView) convertView.findViewById(R.id.tvBody);
         TextView tvUserName = (TextView) convertView.findViewById(R.id.tvUserName);
         TextView tvScreenName = (TextView) convertView.findViewById(R.id.tvScreenName);
@@ -66,6 +67,14 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
         tvFavoritesCount.setText(Integer.toString(tweet.getFavoriteCount()));
         ivProfileImage.setImageResource(android.R.color.transparent);
         Picasso.with(getContext()).load(tweet.getUser().getProfileImageUrl()).into(ivProfileImage);
+
+        if(tweet.getEmbeddedImageURL() != null) {
+            Picasso.with(getContext()).load(tweet.getEmbeddedImageURL()).into(ivTweetImage);
+            ivTweetImage.setVisibility(View.VISIBLE);
+        }
+        else {
+            ivTweetImage.setVisibility(View.GONE);
+        }
 
         return convertView;
 

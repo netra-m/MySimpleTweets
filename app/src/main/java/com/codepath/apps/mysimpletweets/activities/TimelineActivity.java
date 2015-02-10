@@ -50,7 +50,7 @@ public class TimelineActivity extends ActionBarActivity implements ComposeCallBa
         super.onCreate(savedInstanceState);
 
         ActionBar mActionBar = getSupportActionBar();
-        mActionBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#ff6ec8ff")));
+        mActionBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#4099FF")));
         mActionBar.setDisplayShowHomeEnabled(false);
         mActionBar.setDisplayShowTitleEnabled(false);
         LayoutInflater mInflater = LayoutInflater.from(this);
