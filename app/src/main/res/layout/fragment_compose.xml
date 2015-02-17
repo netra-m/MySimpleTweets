@@ -8,13 +8,49 @@
 
 
     <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="end"
+        android:orientation="horizontal"
+        android:padding="10dp"
+        android:id="@+id/linearLayout"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true">
+
+        <TextView
+            android:id="@+id/tvComposeNumChars"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#ffadadad"
+            android:gravity="center"
+            android:paddingRight="20dp"
+            android:text="140"
+            android:textSize="10sp"
+            android:textStyle="italic" />
+
+        <Button
+            android:id="@+id/btTweet"
+            android:layout_width="50dp"
+            android:layout_height="30dp"
+            android:background="@drawable/custom_button"
+            android:onClick="composeTweet"
+            android:text="Tweet"
+            android:textColor="#fff"
+            android:textSize="10sp"
+            android:textStyle="bold"
+            style="android:attr/buttonStyleSmall"/>
+    </LinearLayout>
+
+
+    <LinearLayout
         android:id="@+id/llHorizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
         android:orientation="horizontal"
-        android:padding="10dp">
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingBottom="10dp"
+        android:layout_below="@+id/linearLayout">
 
         <ImageView
             android:id="@+id/ivComposeImage"
@@ -60,41 +96,11 @@
         android:layout_below="@+id/llHorizontal"
         android:background="#0000"
         android:hint="What's happening?"
-        android:paddingLeft="10dp"
+        android:paddingLeft="20dp"
         android:textColor="#000"
         android:textColorHint="#ffadadad"
-        android:textSize="12sp" />
+        android:textSize="12sp"
+        android:paddingBottom="50dp"/>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/etCompose"
-        android:gravity="end"
-        android:orientation="horizontal"
-        android:padding="10dp"
-        android:paddingTop="10dp">
-
-        <TextView
-            android:id="@+id/tvComposeNumChars"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="#ffadadad"
-            android:gravity="center"
-            android:paddingRight="20dp"
-            android:text="140"
-            android:textSize="10sp"
-            android:textStyle="italic" />
-
-        <Button
-            android:id="@+id/btTweet"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/custom_button"
-            android:onClick="composeTweet"
-            android:text="Tweet"
-            android:textColor="#fff"
-            android:textSize="10sp"
-            android:textStyle="bold"/>
-    </LinearLayout>
 
 </RelativeLayout>
