@@ -1,4 +1,4 @@
-package com.codepath.apps.mysimpletweets.activities;
+package fragments;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.codepath.apps.mysimpletweets.R;
+import com.codepath.apps.mysimpletweets.models.ComposeCallBack;
 import com.codepath.apps.mysimpletweets.models.User;
 import com.squareup.picasso.Picasso;
 

@@ -11,12 +11,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.codepath.apps.mysimpletweets.R;
-import com.codepath.apps.mysimpletweets.activities.ComposeFragment;
 import com.codepath.apps.mysimpletweets.activities.TimelineActivity;
 import com.codepath.apps.mysimpletweets.models.Tweet;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
+
+import fragments.ComposeFragment;
+import fragments.TweetsListFragment;
 
 /**
  * Created by netram on 2/8/15.
@@ -53,7 +55,7 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
                 android.support.v4.app.FragmentManager fm = ((TimelineActivity) getContext()).getSupportFragmentManager();
                 ComposeFragment composeFragment = ComposeFragment.newInstance("Compose Tweet");
                 Bundle bundle = new Bundle();
-                bundle.putSerializable("user", TimelineActivity.getCurrentUser());
+                bundle.putSerializable("user", TweetsListFragment.getCurrentUser());
                 bundle.putString("replyTo", tweet.getUser().getScreenName());
                 composeFragment.setArguments(bundle);
                 composeFragment.show(fm, "fragment_compose");

@@ -1,4 +1,4 @@
-package com.codepath.apps.mysimpletweets.activities;
+package com.codepath.apps.mysimpletweets.models;
 
 /**
  * Created by netram on 2/9/15.
