@@ -1,4 +1,4 @@
-package fragments;
+package com.codepath.apps.mysimpletweets.fragments;
 
 import android.content.Context;
 import android.content.Intent;
@@ -17,22 +17,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.activeandroid.util.Log;
 import com.codepath.apps.mysimpletweets.R;
 import com.codepath.apps.mysimpletweets.TwitterApplication;
 import com.codepath.apps.mysimpletweets.activities.TimelineActivity;
 import com.codepath.apps.mysimpletweets.activities.TweetDetailActivity;
 import com.codepath.apps.mysimpletweets.adapters.TweetsArrayAdapter;
 import com.codepath.apps.mysimpletweets.models.Tweet;
-import com.codepath.apps.mysimpletweets.models.User;
 import com.codepath.apps.mysimpletweets.utils.EndlessScrollListener;
 import com.codepath.apps.mysimpletweets.utils.TwitterClient;
-import com.loopj.android.http.JsonHttpResponseHandler;
-
-import org.apache.http.Header;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,8 +41,8 @@ public abstract class TweetsListFragment  extends Fragment{
     protected TweetsArrayAdapter tweetsArrayAdapter;
     private List<Tweet> tweets;
     private ListView lvTweets;
-    private static User currentUser;
     private SwipeRefreshLayout swipeContainer;
+    protected ProgressBar progressBar;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -63,6 +58,8 @@ public abstract class TweetsListFragment  extends Fragment{
 
         mActionBar.setCustomView(mCustomView);
         mActionBar.setDisplayShowCustomEnabled(true);
+
+        progressBar = (ProgressBar) view.findViewById(R.id.pbLoading);
 
         swipeContainer = (SwipeRefreshLayout) view.findViewById(R.id.swipeContainer);
 
@@ -112,7 +109,6 @@ public abstract class TweetsListFragment  extends Fragment{
         });
 
         if(isNetworkAvailable()) {
-            populateCurrentUser();
             populateTimeLine(Long.MAX_VALUE);
         }
         else {
@@ -130,36 +126,13 @@ public abstract class TweetsListFragment  extends Fragment{
 
 
 
-    private void populateCurrentUser() {
 
-        if (currentUser == null) {
-
-            twitterClient.getCurrentUser(new JsonHttpResponseHandler() {
-
-                @Override
-                public void onSuccess(int statusCode, Header[] headers, JSONObject jsonObject) {
-
-                    currentUser = User.fromJSON(jsonObject);
-
-                }
-
-                @Override
-                public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                    Log.e("Error", "Failure in twitter call" + errorResponse.toString());
-                }
-
-            });
-        }
-
-    }
     public void refreshTimeline() {
         tweetsArrayAdapter.clear();
         populateTimeLine(Long.MAX_VALUE);
     }
 
-    public static User getCurrentUser() {
-        return currentUser;
-    }
+
 
     private Boolean isNetworkAvailable() {
         ConnectivityManager connectivityManager

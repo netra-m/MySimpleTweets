@@ -1,6 +1,7 @@
 package com.codepath.apps.mysimpletweets.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,14 +12,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.codepath.apps.mysimpletweets.R;
+import com.codepath.apps.mysimpletweets.activities.ProfileActivity;
 import com.codepath.apps.mysimpletweets.activities.TimelineActivity;
+import com.codepath.apps.mysimpletweets.fragments.ComposeFragment;
 import com.codepath.apps.mysimpletweets.models.Tweet;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
-
-import fragments.ComposeFragment;
-import fragments.TweetsListFragment;
 
 /**
  * Created by netram on 2/8/15.
@@ -38,7 +38,7 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_tweet, parent, false);
         }
 
-        ImageView ivProfileImage = (ImageView) convertView.findViewById(R.id.ivProfileImage);
+        ImageButton ibProfileImage = (ImageButton) convertView.findViewById(R.id.ibProfileImage);
         ImageView ivTweetImage = (ImageView) convertView.findViewById(R.id.ivTweetImage);
 
         TextView tvBody = (TextView) convertView.findViewById(R.id.tvBody);
@@ -55,7 +55,7 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
                 android.support.v4.app.FragmentManager fm = ((TimelineActivity) getContext()).getSupportFragmentManager();
                 ComposeFragment composeFragment = ComposeFragment.newInstance("Compose Tweet");
                 Bundle bundle = new Bundle();
-                bundle.putSerializable("user", TweetsListFragment.getCurrentUser());
+                bundle.putSerializable("user", TimelineActivity.getCurrentUser());
                 bundle.putString("replyTo", tweet.getUser().getScreenName());
                 composeFragment.setArguments(bundle);
                 composeFragment.show(fm, "fragment_compose");
@@ -68,8 +68,16 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
         tvRelativeTime.setText(Tweet.getRelativeTimeAgo(tweet.getCreatedAt(),true));
         tvRetweetCount.setText(Integer.toString(tweet.getRetweetCount()));
         tvFavoritesCount.setText(Integer.toString(tweet.getFavoriteCount()));
-        ivProfileImage.setImageResource(android.R.color.transparent);
-        Picasso.with(getContext()).load(tweet.getUser().getProfileImageUrl()).into(ivProfileImage);
+        ibProfileImage.setImageResource(android.R.color.transparent);
+        Picasso.with(getContext()).load(tweet.getUser().getProfileImageUrl()).into(ibProfileImage);
+        ibProfileImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), ProfileActivity.class);
+                intent.putExtra("user", tweet.getUser());
+                getContext().startActivity(intent);
+            }
+        });
 
         if(tweet.getEmbeddedImageURL() != null) {
             Picasso.with(getContext()).load(tweet.getEmbeddedImageURL()).into(ivTweetImage);

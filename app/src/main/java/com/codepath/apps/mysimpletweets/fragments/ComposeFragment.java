@@ -1,4 +1,4 @@
-package fragments;
+package com.codepath.apps.mysimpletweets.fragments;
 
 import android.app.Activity;
 import android.app.Dialog;

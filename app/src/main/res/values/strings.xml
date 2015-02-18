@@ -12,5 +12,6 @@
     <color name="twitter_color_blue">#ff6ec8ff</color>
 
     <string name="title_activity_tweet_detail">TweetDetailActivity</string>
+    <string name="title_activity_profile">Profile</string>
 
 </resources>

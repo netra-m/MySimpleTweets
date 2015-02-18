@@ -1,6 +1,7 @@
-package fragments;
+package com.codepath.apps.mysimpletweets.fragments;
 
 import android.os.Bundle;
+import android.view.View;
 
 import com.activeandroid.util.Log;
 import com.codepath.apps.mysimpletweets.models.Tweet;
@@ -18,10 +19,11 @@ public class HomeTimelineFragment extends TweetsListFragment{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        populateTimeLine(Long.MAX_VALUE);
     }
 
     protected void populateTimeLine(long lastVisibleUid) {
+
+        progressBar.setVisibility(View.VISIBLE);
 
         twitterClient.getHomeTimeline(new JsonHttpResponseHandler() {
 
@@ -29,11 +31,13 @@ public class HomeTimelineFragment extends TweetsListFragment{
             public void onSuccess(int statusCode, Header[] headers, JSONArray jsonArray) {
                 Log.d("DEBUG", jsonArray.toString());
                 tweetsArrayAdapter.addAll(Tweet.fromJSONArray(jsonArray));
+                progressBar.setVisibility(View.INVISIBLE);
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
                 Log.e("Error", "Failure in twitter call" + errorResponse.toString());
+                progressBar.setVisibility(View.INVISIBLE);
             }
 
         }, lastVisibleUid);

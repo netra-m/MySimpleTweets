@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.codepath.oauth.OAuthBaseClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
 import org.scribe.builder.api.Api;
@@ -35,15 +36,15 @@ public class TwitterClient extends OAuthBaseClient {
 
 
     public void getHomeTimeline(AsyncHttpResponseHandler handler, long lastVisibleUid) {
-        Log.i("INFO","Twitter API called with lastVisibleUid="+lastVisibleUid);
+        Log.i("INFO", "Twitter API called with lastVisibleUid=" + lastVisibleUid);
 
         String apiUrl = getApiUrl("statuses/home_timeline.json");
 
         RequestParams params = new RequestParams();
         params.put("count", "25");
         params.put("since_id", "1");
-        if(lastVisibleUid != Long.MAX_VALUE) {
-            params.put("max_id",Long.toString(lastVisibleUid-1));
+        if (lastVisibleUid != Long.MAX_VALUE) {
+            params.put("max_id", Long.toString(lastVisibleUid - 1));
         }
         getClient().get(apiUrl, params, handler);
     }
@@ -52,24 +53,51 @@ public class TwitterClient extends OAuthBaseClient {
 
         String apiUrl = getApiUrl("account/verify_credentials.json");
 
-        RequestParams params = new RequestParams();
-        params.put("include_entities", "false");
-        params.put("skip_status", "true");
-
-        getClient().get(apiUrl, params, handler);
+        getClient().get(apiUrl, null, handler);
 
     }
 
-    public void postTweet(AsyncHttpResponseHandler handler,String status) {
+    public void postTweet(AsyncHttpResponseHandler handler, String status) {
 
         String apiUrl = getApiUrl("statuses/update.json");
 
         RequestParams params = new RequestParams();
         params.put("status", status);
 
-        getClient().post(apiUrl,params,handler);
+        getClient().post(apiUrl, params, handler);
 
     }
+
+    public void getMentionsTimeline(JsonHttpResponseHandler jsonHttpResponseHandler, long lastVisibleUid) {
+
+        Log.i("INFO", "Twitter Mentions API called with lastVisibleUid=" + lastVisibleUid);
+
+        String apiUrl = getApiUrl("statuses/mentions_timeline.json");
+
+        RequestParams params = new RequestParams();
+        params.put("count", "25");
+        if (lastVisibleUid != Long.MAX_VALUE) {
+            params.put("max_id", Long.toString(lastVisibleUid - 1));
+        }
+        getClient().get(apiUrl, params, jsonHttpResponseHandler);
+    }
+
+    public void getUserTimeline(JsonHttpResponseHandler jsonHttpResponseHandler, long lastVisibleUid, String screenName) {
+
+        String apiUrl = getApiUrl("statuses/user_timeline.json");
+
+        RequestParams params = new RequestParams();
+        params.put("screen_name",screenName);
+        params.put("count", "25");
+        if (lastVisibleUid != Long.MAX_VALUE) {
+            params.put("max_id", Long.toString(lastVisibleUid - 1));
+        }
+        getClient().get(apiUrl, params, jsonHttpResponseHandler);
+    }
+
+
+
+
 
 	/* 1. Define the endpoint URL with getApiUrl and pass a relative path to the endpoint
      * 	  i.e getApiUrl("statuses/home_timeline.json");

@@ -15,12 +15,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.codepath.apps.mysimpletweets.R;
+import com.codepath.apps.mysimpletweets.fragments.ComposeFragment;
 import com.codepath.apps.mysimpletweets.models.ComposeCallBack;
 import com.codepath.apps.mysimpletweets.models.Tweet;
 import com.squareup.picasso.Picasso;
-
-import fragments.ComposeFragment;
-import fragments.TweetsListFragment;
 
 public class TweetDetailActivity extends ActionBarActivity implements ComposeCallBack {
 
@@ -45,7 +43,7 @@ public class TweetDetailActivity extends ActionBarActivity implements ComposeCal
 
         final Tweet tweet = (Tweet) getIntent().getSerializableExtra("tweet");
 
-        ImageView ivProfileImage = (ImageView) findViewById(R.id.ivProfileImage);
+        ImageView ivProfileImage = (ImageView) findViewById(R.id.ibProfileImage);
         TextView tvBody = (TextView) findViewById(R.id.tvBody);
         TextView tvUserName = (TextView) findViewById(R.id.tvUserName);
         TextView tvScreenName = (TextView) findViewById(R.id.tvScreenName);
@@ -60,7 +58,7 @@ public class TweetDetailActivity extends ActionBarActivity implements ComposeCal
                 android.support.v4.app.FragmentManager fm = getSupportFragmentManager();
                 ComposeFragment composeFragment = ComposeFragment.newInstance("Compose Tweet");
                 Bundle bundle = new Bundle();
-                bundle.putSerializable("user", TweetsListFragment.getCurrentUser());
+                bundle.putSerializable("user", TimelineActivity.getCurrentUser());
                 bundle.putString("replyTo", tweet.getUser().getScreenName());
                 composeFragment.setArguments(bundle);
                 composeFragment.show(fm, "fragment_compose");
