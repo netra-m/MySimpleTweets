@@ -125,10 +125,15 @@ public abstract class TweetsListFragment  extends Fragment{
     }
 
 
-
-
     public void refreshTimeline() {
         tweetsArrayAdapter.clear();
+        populateTimeLine(Long.MAX_VALUE);
+    }
+
+
+    public void addToTimeLine(Tweet tweet) {
+        tweetsArrayAdapter.insert(tweet,0);
+        tweetsArrayAdapter.notifyDataSetChanged();
         populateTimeLine(Long.MAX_VALUE);
     }
 

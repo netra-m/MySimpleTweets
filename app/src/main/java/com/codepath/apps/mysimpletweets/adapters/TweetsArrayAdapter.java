@@ -3,6 +3,7 @@ package com.codepath.apps.mysimpletweets.adapters;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,11 +13,16 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.codepath.apps.mysimpletweets.R;
+import com.codepath.apps.mysimpletweets.TwitterApplication;
 import com.codepath.apps.mysimpletweets.activities.ProfileActivity;
 import com.codepath.apps.mysimpletweets.activities.TimelineActivity;
 import com.codepath.apps.mysimpletweets.fragments.ComposeFragment;
 import com.codepath.apps.mysimpletweets.models.Tweet;
+import com.loopj.android.http.JsonHttpResponseHandler;
 import com.squareup.picasso.Picasso;
+
+import org.apache.http.Header;
+import org.json.JSONObject;
 
 import java.util.List;
 
@@ -46,7 +52,7 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
         TextView tvScreenName = (TextView) convertView.findViewById(R.id.tvScreenName);
         TextView tvRelativeTime = (TextView) convertView.findViewById(R.id.tvRelativeTime);
         TextView tvRetweetCount = (TextView) convertView.findViewById(R.id.tvRetweetCount);
-        TextView tvFavoritesCount = (TextView) convertView.findViewById(R.id.tvFavoritesCount);
+        final TextView tvFavoritesCount = (TextView) convertView.findViewById(R.id.tvFavoritesCount);
         ImageButton btnReply = (ImageButton) convertView.findViewById(R.id.btnReply);
         btnReply.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -62,9 +68,54 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
             }
         });
 
+        final ImageButton btnRetweet = (ImageButton) convertView.findViewById(R.id.reTweetIcon);
+        btnRetweet.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                TwitterApplication.getRestClient().retweet(tweet.getUid(), new JsonHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, JSONObject jsonObject) {
+
+                        Tweet retweet = Tweet.fromJSON(jsonObject);
+                        insert(retweet,0);
+
+                    }
+
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                        com.activeandroid.util.Log.e("Error", "Failure in twitter call" + errorResponse.toString());
+                    }
+                });
+
+            }
+        });
+
+        final ImageButton btnFavorite = (ImageButton) convertView.findViewById(R.id.favoritesIcon);
+        btnFavorite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                TwitterApplication.getRestClient().favorite(tweet.getUid(), new JsonHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, JSONObject jsonObject) {
+
+                        tvFavoritesCount.setText(Integer.toString(tweet.getFavoriteCount()+1));
+
+                    }
+
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                        com.activeandroid.util.Log.e("Error", "Failure in twitter call" + errorResponse.toString());
+                    }
+                });
+
+            }
+        });
+
         tvUserName.setText(tweet.getUser().getName());
         tvScreenName.setText("@" + tweet.getUser().getScreenName());
-        tvBody.setText(tweet.getBody());
+        tvBody.setText(Html.fromHtml(tweet.getBody()));
         tvRelativeTime.setText(Tweet.getRelativeTimeAgo(tweet.getCreatedAt(),true));
         tvRetweetCount.setText(Integer.toString(tweet.getRetweetCount()));
         tvFavoritesCount.setText(Integer.toString(tweet.getFavoriteCount()));

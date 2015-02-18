@@ -20,6 +20,7 @@ import com.codepath.apps.mysimpletweets.fragments.HomeTimelineFragment;
 import com.codepath.apps.mysimpletweets.fragments.MentionsTimelineFragment;
 import com.codepath.apps.mysimpletweets.fragments.TweetsListFragment;
 import com.codepath.apps.mysimpletweets.models.ComposeCallBack;
+import com.codepath.apps.mysimpletweets.models.Tweet;
 import com.codepath.apps.mysimpletweets.models.User;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
@@ -105,7 +106,7 @@ public class TimelineActivity extends ActionBarActivity implements ComposeCallBa
         tweetsListFragment.getTwitterClient().postTweet(new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                tweetsListFragment.refreshTimeline();
+                tweetsListFragment.addToTimeLine(Tweet.fromJSON(response));
             }
 
             @Override

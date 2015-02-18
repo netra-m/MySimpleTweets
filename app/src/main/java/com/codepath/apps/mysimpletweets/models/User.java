@@ -4,10 +4,13 @@ import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by netram on 2/8/15.
@@ -30,6 +33,26 @@ public class User extends Model implements Serializable{
     private String tagLine;
 
     private int followers;
+
+    private String backgroundImage;
+
+    private int tweetsCount;
+
+    public int getTweetsCount() {
+        return tweetsCount;
+    }
+
+    public void setTweetsCount(int tweetsCount) {
+        this.tweetsCount = tweetsCount;
+    }
+
+    public String getBackgroundImage() {
+        return backgroundImage;
+    }
+
+    public void setBackgroundImage(String backgroundImage) {
+        this.backgroundImage = backgroundImage;
+    }
 
     public String getTagLine() {
         return tagLine;
@@ -104,11 +127,32 @@ public class User extends Model implements Serializable{
             user.setFollowers(jsonObject.getInt("followers_count"));
             user.setFollowing(jsonObject.getInt("friends_count"));
             user.setTagLine(jsonObject.getString("description"));
+            user.setBackgroundImage(jsonObject.getString("profile_banner_url"));
+            user.setTweetsCount(jsonObject.getInt("statuses_count"));
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
         return user;
+    }
+
+    public static List<User> fromJSONArray(JSONArray jsonArray) {
+
+        List<User> users = new ArrayList<>();
+
+        for (int i = 0; i < jsonArray.length(); i++) {
+
+            try {
+                User user = fromJSON(jsonArray.getJSONObject(i));
+                if (user != null) {
+                    users.add(user);
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+                continue;
+            }
+        }
+        return users;
     }
 }

@@ -7,9 +7,11 @@
     <com.astuetz.PagerSlidingTabStrip
         android:id="@+id/tabs"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="40dp"
         app:pstsShouldExpand="true"
-        app:pstsTextAllCaps="true"></com.astuetz.PagerSlidingTabStrip>
+        android:textColor="#4099FF"
+        app:pstsIndicatorHeight="2dp"
+        app:pstsIndicatorColor="#4099FF"/>
 
     <android.support.v4.view.ViewPager
         android:id="@+id/viewpager"

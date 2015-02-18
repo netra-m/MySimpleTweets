@@ -110,7 +110,7 @@ public class ComposeFragment extends DialogFragment {
 
         if( this.getArguments().get("replyTo") != null )
         {
-            String replyTo = "@" + (String) this.getArguments().get("replyTo");
+            String replyTo = "@" + (String) this.getArguments().get("replyTo")+ " ";
             etCompose.setText(replyTo);
             etCompose.setSelection(etCompose.getText().length());
         }

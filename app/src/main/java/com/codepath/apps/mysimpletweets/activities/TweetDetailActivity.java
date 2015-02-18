@@ -6,6 +6,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -67,7 +68,7 @@ public class TweetDetailActivity extends ActionBarActivity implements ComposeCal
 
         tvUserName.setText(tweet.getUser().getName());
         tvScreenName.setText("@" + tweet.getUser().getScreenName());
-        tvBody.setText(tweet.getBody());
+        tvBody.setText(Html.fromHtml(tweet.getBody()));
         tvRelativeTime.setText(Tweet.getRelativeTimeAgo(tweet.getCreatedAt(),false));
         tvRetweetCount.setText(Integer.toString(tweet.getRetweetCount()));
         tvFavoritesCount.setText(Integer.toString(tweet.getFavoriteCount()));
