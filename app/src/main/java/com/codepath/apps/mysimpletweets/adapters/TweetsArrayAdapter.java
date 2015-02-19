@@ -13,7 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.codepath.apps.mysimpletweets.R;
-import com.codepath.apps.mysimpletweets.TwitterApplication;
+import com.codepath.apps.mysimpletweets.utils.TwitterApplication;
 import com.codepath.apps.mysimpletweets.activities.ProfileActivity;
 import com.codepath.apps.mysimpletweets.activities.TimelineActivity;
 import com.codepath.apps.mysimpletweets.fragments.ComposeFragment;
@@ -51,9 +51,19 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
         TextView tvUserName = (TextView) convertView.findViewById(R.id.tvUserName);
         TextView tvScreenName = (TextView) convertView.findViewById(R.id.tvScreenName);
         TextView tvRelativeTime = (TextView) convertView.findViewById(R.id.tvRelativeTime);
-        TextView tvRetweetCount = (TextView) convertView.findViewById(R.id.tvRetweetCount);
+        final TextView tvRetweetCount = (TextView) convertView.findViewById(R.id.tvRetweetCount);
         final TextView tvFavoritesCount = (TextView) convertView.findViewById(R.id.tvFavoritesCount);
         ImageButton btnReply = (ImageButton) convertView.findViewById(R.id.btnReply);
+
+        tvUserName.setText(tweet.getUser().getName());
+        tvScreenName.setText("@" + tweet.getUser().getScreenName());
+        tvBody.setText(Html.fromHtml(tweet.getBody()));
+        tvRelativeTime.setText(Tweet.getRelativeTimeAgo(tweet.getCreatedAt(), true));
+        tvRetweetCount.setText(Integer.toString(tweet.getRetweetCount()));
+        tvFavoritesCount.setText(Integer.toString(tweet.getFavoriteCount()));
+        ibProfileImage.setImageResource(android.R.color.transparent);
+        Picasso.with(getContext()).load(tweet.getUser().getProfileImageUrl()).into(ibProfileImage);
+
         btnReply.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -69,58 +79,102 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
         });
 
         final ImageButton btnRetweet = (ImageButton) convertView.findViewById(R.id.reTweetIcon);
+        if (tweet.isRetweetedByUser()) {
+            btnRetweet.setImageResource(R.drawable.ic_retweeted);
+        } else {
+            btnRetweet.setImageResource(R.drawable.ic_retweet);
+        }
         btnRetweet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                TwitterApplication.getRestClient().retweet(tweet.getUid(), new JsonHttpResponseHandler() {
-                    @Override
-                    public void onSuccess(int statusCode, Header[] headers, JSONObject jsonObject) {
+                if (tweet.isRetweetedByUser()) {
 
-                        Tweet retweet = Tweet.fromJSON(jsonObject);
-                        insert(retweet,0);
+                    TwitterApplication.getRestClient().undoRetweet(tweet.getUid(), new JsonHttpResponseHandler() {
+                        @Override
+                        public void onSuccess(int statusCode, Header[] headers, JSONObject jsonObject) {
 
-                    }
+                            btnRetweet.setImageResource(R.drawable.ic_retweet);
+                            tvRetweetCount.setText(Integer.toString(tweet.getRetweetCount() - 1));
 
-                    @Override
-                    public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                        com.activeandroid.util.Log.e("Error", "Failure in twitter call" + errorResponse.toString());
-                    }
-                });
+                        }
+
+                        @Override
+                        public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                            com.activeandroid.util.Log.e("Error", "Failure in twitter call" + errorResponse.toString());
+                        }
+                    });
+
+                } else {
+
+                    TwitterApplication.getRestClient().retweet(tweet.getUid(), new JsonHttpResponseHandler() {
+                        @Override
+                        public void onSuccess(int statusCode, Header[] headers, JSONObject jsonObject) {
+
+                            btnRetweet.setImageResource(R.drawable.ic_retweeted);
+                            tvRetweetCount.setText(Integer.toString(tweet.getRetweetCount() + 1));
+
+                        }
+
+                        @Override
+                        public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                            com.activeandroid.util.Log.e("Error", "Failure in twitter call" + errorResponse.toString());
+                        }
+                    });
+
+                }
 
             }
         });
 
         final ImageButton btnFavorite = (ImageButton) convertView.findViewById(R.id.favoritesIcon);
+
+        if (tweet.isFavoritedByUser()) {
+
+            btnFavorite.setImageResource(R.drawable.ic_favorited);
+        } else {
+            btnFavorite.setImageResource(R.drawable.ic_favorites);
+        }
         btnFavorite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                TwitterApplication.getRestClient().favorite(tweet.getUid(), new JsonHttpResponseHandler() {
-                    @Override
-                    public void onSuccess(int statusCode, Header[] headers, JSONObject jsonObject) {
+                if (tweet.isFavoritedByUser()) {
 
-                        tvFavoritesCount.setText(Integer.toString(tweet.getFavoriteCount()+1));
+                    TwitterApplication.getRestClient().unFavorite(tweet.getUid(), new JsonHttpResponseHandler() {
+                        @Override
+                        public void onSuccess(int statusCode, Header[] headers, JSONObject jsonObject) {
+                            btnFavorite.setImageResource(R.drawable.ic_favorites);
+                            tvFavoritesCount.setText(Integer.toString(tweet.getFavoriteCount() - 1));
 
-                    }
+                        }
 
-                    @Override
-                    public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                        com.activeandroid.util.Log.e("Error", "Failure in twitter call" + errorResponse.toString());
-                    }
-                });
+                        @Override
+                        public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                            com.activeandroid.util.Log.e("Error", "Failure in twitter call" + errorResponse.toString());
+                        }
+                    });
+
+                } else {
+                    TwitterApplication.getRestClient().favorite(tweet.getUid(), new JsonHttpResponseHandler() {
+                        @Override
+                        public void onSuccess(int statusCode, Header[] headers, JSONObject jsonObject) {
+                            btnFavorite.setImageResource(R.drawable.ic_favorited);
+                            tvFavoritesCount.setText(Integer.toString(tweet.getFavoriteCount() + 1));
+
+                        }
+
+                        @Override
+                        public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                            com.activeandroid.util.Log.e("Error", "Failure in twitter call" + errorResponse.toString());
+                        }
+                    });
+                }
 
             }
         });
 
-        tvUserName.setText(tweet.getUser().getName());
-        tvScreenName.setText("@" + tweet.getUser().getScreenName());
-        tvBody.setText(Html.fromHtml(tweet.getBody()));
-        tvRelativeTime.setText(Tweet.getRelativeTimeAgo(tweet.getCreatedAt(),true));
-        tvRetweetCount.setText(Integer.toString(tweet.getRetweetCount()));
-        tvFavoritesCount.setText(Integer.toString(tweet.getFavoriteCount()));
-        ibProfileImage.setImageResource(android.R.color.transparent);
-        Picasso.with(getContext()).load(tweet.getUser().getProfileImageUrl()).into(ibProfileImage);
+
         ibProfileImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -130,11 +184,10 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
             }
         });
 
-        if(tweet.getEmbeddedImageURL() != null) {
+        if (tweet.getEmbeddedImageURL() != null) {
             Picasso.with(getContext()).load(tweet.getEmbeddedImageURL()).into(ivTweetImage);
             ivTweetImage.setVisibility(View.VISIBLE);
-        }
-        else {
+        } else {
             ivTweetImage.setVisibility(View.GONE);
         }
 
@@ -142,13 +195,12 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
         ImageView ivRetweeted = (ImageView) convertView.findViewById(R.id.ivRetweeted);
         TextView tvRetweeted = (TextView) convertView.findViewById(R.id.tvRetweeted);
 
-        if(tweet.getRetweetedUser() != null) {
+        if (tweet.getRetweetedUser() != null) {
             ivRetweeted.setVisibility(View.VISIBLE);
             tvRetweeted.setVisibility(View.VISIBLE);
-            tvRetweeted.setText(tweet.getRetweetedUser().getName()+" retweeted");
+            tvRetweeted.setText(tweet.getRetweetedUser().getName() + " retweeted");
 
-        }
-        else {
+        } else {
             ivRetweeted.setVisibility(View.GONE);
             tvRetweeted.setVisibility(View.GONE);
         }

@@ -48,6 +48,26 @@ public class Tweet extends Model implements Serializable {
     @Column(name="retweetedUser")
     private User retweetedUser;
 
+    public boolean isRetweetedByUser() {
+        return retweetedByUser;
+    }
+
+    public void setRetweetedByUser(boolean retweetedByUser) {
+        this.retweetedByUser = retweetedByUser;
+    }
+
+    public boolean isFavoritedByUser() {
+        return favoritedByUser;
+    }
+
+    public void setFavoritedByUser(boolean favoritedByUser) {
+        this.favoritedByUser = favoritedByUser;
+    }
+
+    private boolean retweetedByUser;
+
+    private boolean favoritedByUser;
+
     public User getRetweetedUser() {
         return retweetedUser;
     }
@@ -132,6 +152,8 @@ public class Tweet extends Model implements Serializable {
             tweet.setUser(User.fromJSON(jsonObject.getJSONObject("user")));
             tweet.setRetweetCount(jsonObject.getInt("retweet_count"));
             tweet.setFavoriteCount(jsonObject.getInt("favorite_count"));
+            tweet.setRetweetedByUser(jsonObject.getBoolean("retweeted"));
+            tweet.setFavoritedByUser(jsonObject.getBoolean("favorited"));
 
 
             JSONObject entity = jsonObject.getJSONObject("entities");

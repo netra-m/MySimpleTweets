@@ -3,15 +3,24 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.codepath.apps.mysimpletweets.activities.TimelineActivity">
 
+    <item android:id="@+id/action_search"
+        android:orderInCategory="1"
+        android:title="Search"
+        android:icon="@android:drawable/ic_menu_search"
+        app:showAsAction="ifRoom|collapseActionView"
+        app:actionViewClass="android.support.v7.widget.SearchView" />
+
     <item
         android:id="@+id/compose"
         android:icon="@drawable/ic_compose"
         app:showAsAction="always"
-        android:title="Compose"/>
+        android:title="Compose"
+        android:orderInCategory="2"/>
 
     <item
         android:id="@+id/profile"
         android:icon="@drawable/ic_profile"
         app:showAsAction="always"
-        android:title="Compose"/>
+        android:title="Compose"
+        android:orderInCategory="3"/>
 </menu>

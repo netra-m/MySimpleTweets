@@ -87,7 +87,7 @@ public class TwitterClient extends OAuthBaseClient {
         String apiUrl = getApiUrl("statuses/user_timeline.json");
 
         RequestParams params = new RequestParams();
-        params.put("screen_name",screenName);
+        params.put("screen_name", screenName);
         params.put("count", "25");
         if (lastVisibleUid != Long.MAX_VALUE) {
             params.put("max_id", Long.toString(lastVisibleUid - 1));
@@ -97,7 +97,15 @@ public class TwitterClient extends OAuthBaseClient {
 
     public void retweet(long uid, AsyncHttpResponseHandler handler) {
 
-        String apiUrl = getApiUrl("statuses/retweet/"+Long.toString(uid)+".json");
+        String apiUrl = getApiUrl("statuses/retweet/" + Long.toString(uid) + ".json");
+
+        getClient().post(apiUrl, null, handler);
+
+    }
+
+    public void undoRetweet(long uid, AsyncHttpResponseHandler handler) {
+
+        String apiUrl = getApiUrl("statuses/destroy/" + Long.toString(uid) + ".json");
 
         getClient().post(apiUrl, null, handler);
 
@@ -107,7 +115,17 @@ public class TwitterClient extends OAuthBaseClient {
 
         String apiUrl = getApiUrl("favorites/create.json");
         RequestParams params = new RequestParams();
-        params.put("id",Long.toString(uid));
+        params.put("id", Long.toString(uid));
+
+        getClient().post(apiUrl, params, handler);
+
+    }
+
+    public void unFavorite(long uid, AsyncHttpResponseHandler handler) {
+
+        String apiUrl = getApiUrl("favorites/destroy.json");
+        RequestParams params = new RequestParams();
+        params.put("id", Long.toString(uid));
 
         getClient().post(apiUrl, params, handler);
 
@@ -117,8 +135,8 @@ public class TwitterClient extends OAuthBaseClient {
 
         String apiUrl = getApiUrl("followers/list.json");
         RequestParams params = new RequestParams();
-        params.put("count","200");
-        params.put("screen_name",screenName);
+        params.put("count", "200");
+        params.put("screen_name", screenName);
 
         getClient().get(apiUrl, params, handler);
 
@@ -128,11 +146,24 @@ public class TwitterClient extends OAuthBaseClient {
 
         String apiUrl = getApiUrl("friends/list.json");
         RequestParams params = new RequestParams();
-        params.put("count","200");
-        params.put("screen_name",screenName);
+        params.put("count", "200");
+        params.put("screen_name", screenName);
 
         getClient().get(apiUrl, params, handler);
 
+    }
+
+    public void getSearchResults(JsonHttpResponseHandler handler, long lastVisibleUid, String query) {
+
+        String apiUrl = getApiUrl("search/tweets.json");
+        RequestParams params = new RequestParams();
+        params.put("q", query);
+        params.put("count", 100);
+        if (lastVisibleUid != Long.MAX_VALUE) {
+            params.put("max_id", Long.toString(lastVisibleUid - 1));
+        }
+
+        getClient().get(apiUrl, params, handler);
     }
 
 

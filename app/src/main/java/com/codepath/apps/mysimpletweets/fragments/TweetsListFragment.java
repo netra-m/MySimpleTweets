@@ -8,7 +8,6 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
@@ -21,7 +20,7 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.codepath.apps.mysimpletweets.R;
-import com.codepath.apps.mysimpletweets.TwitterApplication;
+import com.codepath.apps.mysimpletweets.utils.TwitterApplication;
 import com.codepath.apps.mysimpletweets.activities.TimelineActivity;
 import com.codepath.apps.mysimpletweets.activities.TweetDetailActivity;
 import com.codepath.apps.mysimpletweets.adapters.TweetsArrayAdapter;
@@ -35,7 +34,7 @@ import java.util.List;
 /**
  * Created by netram on 2/17/15.
  */
-public abstract class TweetsListFragment  extends Fragment{
+public abstract class TweetsListFragment  extends android.support.v4.app.DialogFragment{
 
     protected TwitterClient twitterClient;
     protected TweetsArrayAdapter tweetsArrayAdapter;
@@ -43,6 +42,7 @@ public abstract class TweetsListFragment  extends Fragment{
     private ListView lvTweets;
     private SwipeRefreshLayout swipeContainer;
     protected ProgressBar progressBar;
+    protected View menuCustomView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -54,9 +54,9 @@ public abstract class TweetsListFragment  extends Fragment{
         mActionBar.setDisplayShowHomeEnabled(false);
         mActionBar.setDisplayShowTitleEnabled(false);
         LayoutInflater mInflater = LayoutInflater.from(getActivity());
-        View mCustomView = mInflater.inflate(R.layout.timeline_action_bar, null);
+        menuCustomView = mInflater.inflate(R.layout.timeline_action_bar, null);
 
-        mActionBar.setCustomView(mCustomView);
+        mActionBar.setCustomView(menuCustomView);
         mActionBar.setDisplayShowCustomEnabled(true);
 
         progressBar = (ProgressBar) view.findViewById(R.id.pbLoading);
@@ -132,9 +132,9 @@ public abstract class TweetsListFragment  extends Fragment{
 
 
     public void addToTimeLine(Tweet tweet) {
+
         tweetsArrayAdapter.insert(tweet,0);
-        tweetsArrayAdapter.notifyDataSetChanged();
-        populateTimeLine(Long.MAX_VALUE);
+        lvTweets.setSelectionAfterHeaderView();
     }
 
 
